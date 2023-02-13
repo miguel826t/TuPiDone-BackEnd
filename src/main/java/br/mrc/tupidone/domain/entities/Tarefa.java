@@ -1,6 +1,7 @@
 package br.mrc.tupidone.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +40,17 @@ public class Tarefa implements Serializable{
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataCriacao;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dataFinalizacao;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate dataFinalizacao;
 	
 	@OneToMany(mappedBy = "tarefa")
 	private List<ItensTarefa> itens = new ArrayList<ItensTarefa>();
 	
 	/* ======* Construtores *====== */
+	public Tarefa() {
+		
+	}
+	
 	public Tarefa(
 			Usuario usuario, 
 			String titulo,
@@ -73,13 +78,13 @@ public class Tarefa implements Serializable{
 				.filter(i -> i.isConcluido())
 				.collect(Collectors.toList()).size();
 	}
-	
+
 	public boolean isConcluida() {
-		return !dataFinalizacao.equals(null);
+		return dataFinalizacao != null;
 	}
-	
+
 	public void finalizar() {
-		this.dataFinalizacao = LocalDateTime.now();
+		this.dataFinalizacao = LocalDate.now();
 	}
 	
 	

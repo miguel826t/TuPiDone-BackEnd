@@ -1,5 +1,6 @@
 package br.mrc.tupidone.domain.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,11 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ItensTarefa {
 	
@@ -27,8 +30,8 @@ public class ItensTarefa {
 	private String titulo;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataCriacao;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dataFinalizacao;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate dataFinalizacao;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -36,6 +39,8 @@ public class ItensTarefa {
 	private Tarefa tarefa;
 	
 	/* ======* Construtor *====== */
+	public ItensTarefa() {}
+	
 	public ItensTarefa(String titulo,Tarefa tarefa) {
 		this.titulo = titulo;
 		this.tarefa = tarefa;
@@ -44,11 +49,11 @@ public class ItensTarefa {
 	
 	/* ======* Metodos publicos *====== */
 	public boolean isConcluido() {
-		return !dataFinalizacao.equals(null);
+		return this.dataFinalizacao != null;
 	}
-	
+
 	public void finalizar() {
-		this.dataFinalizacao = LocalDateTime.now();
+		this.dataFinalizacao = LocalDate.now();
 	}
 	
 	
