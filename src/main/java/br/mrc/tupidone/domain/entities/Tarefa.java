@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,10 +18,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
+@Table(name = "Tarefa")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Tarefa implements Serializable{
@@ -28,15 +31,19 @@ public class Tarefa implements Serializable{
 	
 	@Id
 	@EqualsAndHashCode.Include
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer  id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Integer id;
 	
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
-	private Usuario  usuario;
-	private String   titulo;
-	private String   descricao;
+	private Usuario usuario;
+	
+	@Column(name = "titulo", length = 100)
+	private String  titulo;
+	@Column(name = "descricao", length = 100)
+	private String  descricao;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataCriacao;
